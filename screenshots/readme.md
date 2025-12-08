@@ -157,3 +157,5 @@ flowchart TD
   class B,H report
   class C,G,J process
   class D,E,F alert
+
+The BPMN mermaid diagram illustrates the full operational intelligence workflow within the Shadow Intelligence Unit. It begins with data entry from the field spy, who submits intelligence gathered during missions. After submission, the report undergoes analysis, where threat level is evaluated. When a threat is classified as High or Critical, the system automatically generates an Internal Alert that notifies security leadership for immediate follow-up actions. At the same time, the analyst may update the spy’s status based on the impact of the mission or revealed threats, which is then stored within the Spy Status Log for traceability. This flow helps visualize how intelligence moves from field operations to analysis and finally to decision-making and action, ensuring timely monitoring, accountability, and informed risk-based intervention.
