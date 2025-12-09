@@ -444,7 +444,8 @@ To physically implement the database structure derived from the logical model an
 
 #### 🧱 Table: Spies
 
-![Spies Table Created](./screenshots/PhaseV/spies_created.png)
+![Spies Table Created](./screenshots/PhaseV/spies_created.png)<img width="402" height="155" alt="spies table" src="https://github.com/user-attachments/assets/e4ec6972-b278-430c-949c-90ad43b3b02c" />
+
 
 ---
 
@@ -456,19 +457,22 @@ To physically implement the database structure derived from the logical model an
 
 #### 🧱 Table: Intelligence_Report
 
-![Reports Table Created](./screenshots/PhaseV/reports_created.png)
+![Reports Table Created](./screenshots/PhaseV/reports_created.png)<img width="836" height="814" alt="Screenshot 2025-12-09 165707" src="https://github.com/user-attachments/assets/f05dcd4a-7102-490e-a8b4-2919409ec7a3" />
+
 
 ---
 
 #### 🧱 Table: Threat_Analysis
 
-![Analysis Table Created](./screenshots/PhaseV/analysis_created.png)threat analyis table.png
+![Analysis Table Created](./screenshots/PhaseV/analysis_created.png) <img width="410" height="360" alt="threat analyis table" src="https://github.com/user-attachments/assets/2f622a73-9847-404f-ba2e-efed922f85c2" />
+
 
 ---
 
 #### 🧱 Table: Spy_Status_Log
 
-![Status Log Table Created](./screenshots/PhaseV/log_created.png)
+![Status Log Table Created](./screenshots/PhaseV/log_created.png)<img width="864" height="939" alt="Screenshot 2025-12-09 170844 - Copy" src="https://github.com/user-attachments/assets/3554bbe1-1aba-4653-b78f-03b14c665e84" />
+
 
 ---
 
