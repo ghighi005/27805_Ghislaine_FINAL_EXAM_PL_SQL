@@ -451,7 +451,8 @@ To physically implement the database structure derived from the logical model an
 
 #### 🧱 Table: Missions
 
-![Missions Table Created](./screenshots/PhaseV/missions_created.png)
+![Missions Table Created](./screenshots/PhaseV/missions_created.png)<img width="806" height="830" alt="Screenshot 2025-12-09 165501" src="https://github.com/user-attachments/assets/75f354f5-bb99-4b25-be3a-d1d1a9c6bbfc" />
+
 
 ---
 
@@ -478,7 +479,8 @@ To physically implement the database structure derived from the logical model an
 
 #### 🧱 Table: Internal_Alert
 
-![Alert Table Created](./screenshots/PhaseV/alerts_created.png)
+![Alert Table Created](./screenshots/PhaseV/alerts_created.png)<img width="1463" height="647" alt="Screenshot 2025-12-09 190302" src="https://github.com/user-attachments/assets/2445f55f-5fd9-4a62-b4e8-9043e43355d3" />
+
 
 ---
 
@@ -490,19 +492,22 @@ Realistic security and mission-related data were inserted into each table to sim
 
 #### 🗃️ Insertion: Spies
 
-![Spy Data Inserted](./screenshots/PhaseV/spies_data.png)
+![Spy Data Inserted](./screenshots/PhaseV/spies_data.png)<img width="964" height="396" alt="Screenshot 2025-12-09 174745" src="https://github.com/user-attachments/assets/2ea72a00-fed8-4ca7-9b55-1bb95ea59aae" />
+
 
 ---
 
 #### 🗃️ Insertion: Missions
 
-![Mission Data Inserted](./screenshots/PhaseV/missions_data.png)
+![Mission Data Inserted](./screenshots/PhaseV/missions_data.png)<img width="957" height="368" alt="Screenshot 2025-12-09 174919" src="https://github.com/user-attachments/assets/77864937-bc75-4c45-b499-f05147265e11" />
+
 
 ---
 
 #### 🗃️ Insertion: Intelligence Reports
 
-![Report Data Inserted](./screenshots/PhaseV/report_data.png)
+![Report Data Inserted](./screenshots/PhaseV/report_data.png)<img width="957" height="368" alt="Screenshot 2025-12-09 174919" src="https://github.com/user-attachments/assets/b06c4777-a525-4935-b95b-debc7cf24c96" />
+
 
 ---
 
