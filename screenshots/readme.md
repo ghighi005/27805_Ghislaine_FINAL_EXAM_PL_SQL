@@ -506,233 +506,167 @@ Realistic security and mission-related data were inserted into each table to sim
 
 ![Analysis Data Inserted](./screenshots/Phas)
 ``
-## 🔧 Phase VI: PL/SQL Programming (Procedures, Functions, Triggers, Packages)
+# Phase VI – PL/SQL Programming (Procedures, Functions, Triggers, Packages)
+Shadow Intelligence Unit (SIU) – Intelligence Automation Module
 
-### 🎯 Objective
+---
 
-To implement mission-critical intelligence logic directly through PL/SQL.  
-This phase focuses on:
-- automated threat evaluations,  
-- spy status tracking,  
-- alert generation, and  
-- structured logic encapsulated inside packages.  
+## 🔧 Objective
 
-Business rules are executed within Oracle to maintain consistency, speed, and auditability.
+Phase VI focuses on implementing the core intelligence-processing logic for the Shadow Intelligence Unit (SIU) using PL/SQL.  
+The goal is to automate critical operations inside the database, such as:
+
+- Recording intelligence reports  
+- Updating spy status based on threat levels  
+- Generating internal alerts for high-risk threats  
+- Calculating spy threat scores  
+- Encapsulating reusable logic with PL/SQL packages  
+- Ensuring reliable and structured intelligence workflows  
+
+This phase ensures that intelligence flows inside SIU are secure, automated, and consistent.
 
 ---
 
 ## 🧱 Database Operations
 
 ### 🔁 DML Operations
-DML was used to:
-- register new intelligence reports,
-- update threat assessment results,
-- modify spy operational statuses.
+DML operations were used to manipulate data inside SIU tables:
+- `INSERT` for saving new intelligence reports  
+- `UPDATE` to modify spy status and last activity times  
+- `DELETE` for removing invalid or test records during debugging  
 
-Examples performed through SQL Developer include inserting new reports, updating risk factors, and logging status changes.
+These operations were essential for testing the procedures, triggers, and functions developed in this phase.
 
----
-![DML](./screenshots/PhaseVI/dmlOps.png)
+![DML](./screenshots/PhaseVI/DML.png)
 
 ---
 
 ### 🧩 DDL Operations
-DDL changes included:
-- Creating threat analysis and alerting tables  
-- Applying new DEFAULT constraints  
-- Updating NOT NULL columns after validation  
+DDL commands such as:
+- `CREATE`
+- `ALTER`
+- `DROP`
+
+were used to refine the schema during development.  
+For instance, fields like `last_active` and `alert_date` were added to improve automation and reporting accuracy.
+
+![DDL](./screenshots/PhaseVI/DDL.png)
 
 ---
-![DDL](./screenshots/PhaseVI/ddlOps.png)
 
-``
 ## 💡 Simple Analytics Problem Statement
 
-> **“Identify the number of alerts triggered by each spy in order to detect highly exposed agents.”**
+> **“Analyze how many HIGH or CRITICAL threat reports each spy has submitted to identify high-risk agents and red-zone regions.”**
 
-A window function was used to compute alert frequency:
+This analytical task helps the agency identify:
+- Spies working in dangerous zones  
+- Missions with recurring hostile activity  
+- The intensity of threats a spy encounters  
 
-```sql
-SELECT 
-    s.spy_name,
-    a.spy_id,
-    COUNT(a.alert_id) OVER (PARTITION BY a.spy_id) AS total_alerts_triggered
-FROM internal_alert a
-JOIN spies s ON a.spy_id = s.spy_id;
-```
-CREATE OR REPLACE PROCEDURE record_intelligence_report (
-    p_spy_id       NUMBER,
-    p_mission_id   NUMBER,
-    p_summary      VARCHAR2,
-    p_details      CLOB,
-    p_threat_level VARCHAR2
-)
-AS
-    v_report_id NUMBER;
-    v_region_id NUMBER;
-    v_mission_type NUMBER;
+A window function was used to efficiently compute totals per spy.
 
-    CURSOR cur_mission IS
-        SELECT m.mission_type_id, s.region_id
-        FROM mission m
-        JOIN spy s ON s.spy_id = p_spy_id
-        WHERE m.mission_id = p_mission_id;
+![Problem statement](./screenshots/PhaseVI/problem-statement.png)
 
-BEGIN
-    OPEN cur_mission;
-    FETCH cur_mission INTO v_mission_type, v_region_id;
-    CLOSE cur_mission;
-
-    v_report_id := seq_report.NEXTVAL;
-
-    INSERT INTO intelligence_report(
-        report_id, spy_id, mission_id, content_summary, details, threat_level, report_date
-    ) VALUES (
-        v_report_id, p_spy_id, p_mission_id, p_summary, p_details, p_threat_level, SYSDATE
-    );
-
-    UPDATE spy
-    SET last_active = SYSDATE
-    WHERE spy_id = p_spy_id;
-
-    IF p_threat_level IN ('High', 'Critical') THEN
-        INSERT INTO internal_alert(
-            alert_id, report_id, alert_type_id, alert_message
-        ) VALUES (
-            seq_alert.NEXTVAL,
-            v_report_id,
-            1,
-            'Automatic alert: ' || p_threat_level || ' threat reported by Spy ' || p_spy_id
-        );
-    END IF;
-
-END;
-/
-BEGIN
-    record_intelligence_report(
-        p_spy_id       => 5,
-        p_mission_id   => 2,
-        p_summary      => 'Suspicious movement detected.',
-        p_details      => 'Unidentified individuals seen crossing restricted terrain.',
-        p_threat_level => 'High'
-    );
-END;
-/
-```
-CREATE OR REPLACE FUNCTION get_spy_threat_score(
-    p_spy_id NUMBER
-) RETURN NUMBER
-AS
-    v_score NUMBER := 0;
-BEGIN
-    SELECT COUNT(*)
-    INTO v_score
-    FROM intelligence_report
-    WHERE spy_id = p_spy_id
-    AND threat_level IN ('High', 'Critical');
-
-    RETURN v_score;
-END;
-/
-```
-CREATE OR REPLACE TRIGGER trg_spy_status_auto
-AFTER INSERT ON intelligence_report
-FOR EACH ROW
-BEGIN
-    IF :NEW.threat_level = 'Critical' THEN
-        UPDATE spy SET status = 'Compromised' WHERE spy_id = :NEW.spy_id;
-
-    ELSIF :NEW.threat_level = 'High' THEN
-        UPDATE spy SET status = 'Under Review' WHERE spy_id = :NEW.spy_id;
-    END IF;
-END;
-/
-```
-CREATE OR REPLACE TRIGGER trg_spy_status_auto
-AFTER INSERT ON intelligence_report
-FOR EACH ROW
-BEGIN
-    IF :NEW.threat_level = 'Critical' THEN
-        UPDATE spy SET status = 'Compromised' WHERE spy_id = :NEW.spy_id;
-
-    ELSIF :NEW.threat_level = 'High' THEN
-        UPDATE spy SET status = 'Under Review' WHERE spy_id = :NEW.spy_id;
-    END IF;
-END;
-/
-```
-CREATE OR REPLACE TRIGGER trg_spy_status_auto
-AFTER INSERT ON intelligence_report
-FOR EACH ROW
-BEGIN
-    IF :NEW.threat_level = 'Critical' THEN
-        UPDATE spy SET status = 'Compromised' WHERE spy_id = :NEW.spy_id;
-
-    ELSIF :NEW.threat_level = 'High' THEN
-        UPDATE spy SET status = 'Under Review' WHERE spy_id = :NEW.spy_id;
-    END IF;
-END;
-/
-```
-CREATE OR REPLACE PACKAGE siu_intel_pkg AS
-    PROCEDURE record_intel(
-        p_spy_id       NUMBER,
-        p_mission_id   NUMBER,
-        p_summary      VARCHAR2,
-        p_details      CLOB,
-        p_threat_level VARCHAR2
-    );
-
-    FUNCTION get_spy_threat_score(p_spy_id NUMBER) RETURN NUMBER;
-END siu_intel_pkg;
-/
-```
-CREATE OR REPLACE PACKAGE BODY siu_intel_pkg AS
-
-    PROCEDURE record_intel(
-        p_spy_id       NUMBER,
-        p_mission_id   NUMBER,
-        p_summary      VARCHAR2,
-        p_details      CLOB,
-        p_threat_level VARCHAR2
-    )
-    AS
-    BEGIN
-        record_intelligence_report(
-            p_spy_id,
-            p_mission_id,
-            p_summary,
-            p_details,
-            p_threat_level
-        );
-    END record_intel;
-
-    FUNCTION get_spy_threat_score(p_spy_id NUMBER)
-    RETURN NUMBER
-    AS
-    BEGIN
-        RETURN get_spy_threat_score(p_spy_id);
-    END;
-
-END siu_intel_pkg;
-/
-```
-BEGIN
-    siu_intel_pkg.record_intel(
-        3, 
-        10,
-        'Unknown convoy detected entering restricted perimeter.',
-        'Movement suggests collaboration with hostile actors.',
-        'Critical'
-    );
-
-    DBMS_OUTPUT.PUT_LINE(
-        'Threat Score for Spy 3: ' || siu_intel_pkg.get_spy_threat_score(3)
-    );
-END;
-/
 ---
-```
+
+## 🛠️ PL/SQL Components
+
+Phase VI introduced several PL/SQL elements to automate intelligence flow within SIU.
+
+---
+
+## ✅ Procedure: **record_intelligence_report**
+
+This procedure handles the complete processing of a new intelligence report:
+- Inserts a report into the database  
+- Updates the spy’s last active timestamp  
+- Generates internal alerts for “High” or “Critical” threats  
+- Uses a cursor to fetch mission and region information  
+
+This ensures that every intelligence entry is processed consistently and securely.
+
+![Procedure](./screenshots/PhaseVI/procedures.png)
+![Explained](./screenshots/PhaseVI/procedure-completed.png)
+
+---
+
+## 🧪 Testing the Procedure
+
+Anonymous blocks were used to test:
+- Valid report submission  
+- Alert generation  
+- Spy activity timestamps  
+- Cursor data retrieval  
+
+Testing confirmed that the procedure works correctly under different threat scenarios.
+
+![Procedure Testing](./screenshots/PhaseVI/procedure-test.png)
+
+---
+
+## 🔍 Function: **get_spy_threat_score**
+
+This function calculates how many high-risk threats a specific spy has encountered.  
+It helps identify:
+- Spies in danger  
+- High-intensity mission areas  
+- Compromised or stressed agents  
+
+The function plays a crucial role in decision-making for reassignment and monitoring.
+
+![Function](./screenshots/PhaseVI/function-test.png)
+
+---
+
+## ⚠️ Trigger: **trg_spy_status_auto**
+
+This trigger automates spy status changes:
+- **Critical threat** → status becomes *Compromised*  
+- **High threat** → status becomes *Under Review*  
+
+It ensures real-time updates without manual intervention, reducing the risk of oversight during emergencies.
+
+![Trigger](./screenshots/PhaseVI/trigger-test.png)
+
+---
+
+## 📦 PL/SQL Package: **siu_intel_pkg**
+
+A PL/SQL package was created to group together SIU intelligence logic:
+
+### Included in the package:
+- Procedure: `record_intel`  
+- Function: `spy_threat_score`  
+
+### Benefits:
+- Centralized intelligence automation
+- Cleaner code organization
+- Reusable logic across other phases
+- Easier maintenance and debugging
+
+![Package spec](./screenshots/PhaseVI/pack-spec.png)
+![Package body](./screenshots/PhaseVI/package-body.png)
+
+---
+
+## 🧪 Package Testing
+
+The package was tested using anonymous PL/SQL blocks.  
+Testing confirmed that:
+- Intelligence reports are recorded correctly  
+- Threat scoring works accurately  
+- Automated alerts and spy status updates function as expected  
+
+![Package Testing](./screenshots/PhaseVI/package-testing.png)
+
+---
+
+## ✅ End of Phase VI
+
+Phase VI successfully introduced automation and intelligence driven decision making inside the SIU system.  
+All PL/SQL components work together to enhance security, accuracy, and operational efficiency within the intelligence workflow.
+
+
 ## 🧠 Phase VII: Advanced Database Programming and Auditing
 
 ### 🎯 Objective
