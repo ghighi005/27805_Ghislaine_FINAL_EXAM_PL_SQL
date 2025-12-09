@@ -375,3 +375,56 @@ Examples:
 ![ERD - Logical Model](./screenshots/PhaseIII/ERD2.png)
 
 ---
+```
+## 🏗️ Phase IV: Database Creation and Access Setup (via SQL Developer)
+
+### 🎯 Objective
+
+To configure and deploy a dedicated Oracle PL/SQL environment specifically for the Shadow Intelligence Monitoring & Threat Analysis System. SQL Developer was used as the main administrative interface—serving as an alternative to Oracle Enterprise Manager—allowing user provisioning, privilege setup, and schema preparation for Phase V.
+
+---
+
+### 🔐 Task 1: PDB and User Creation (SQL Developer)
+
+A separate Pluggable Database (PDB) environment was created to isolate intelligence-based transactional data, ensuring controlled access, security robustness, and simplified schema deployment.
+
+Using SQL Developer GUI and built-in SQL console, the following configuration was executed.
+
+---
+
+### 🧰 Configuration Summary
+
+| Component             | Value                                             |
+|-----------------------|---------------------------------------------------|
+| **Tool Used**         | SQL Developer (OEM Alternative)                   |
+| **PDB Name**          | `wed_27805_Ghislaine_Intelligence_PDB`            |
+| **User Created**      | `ghislaine27805`                                   |
+| **Password**          | `ghislaine`                                       |
+| **Privileges Granted**| Full DBA privileges and resource permissions      |
+
+---
+
+### 📸 Screenshot: PDB Connection and Setup
+
+> 🖇️ *Placeholder – to be replaced with actual screenshot*  
+![PDB Creation](./screenshots/PhaseIV/pdb_connection.png)
+
+---
+
+### 📸 Screenshot: User Creation and Assigned Permissions
+
+> 🏛 *Placeholder – to be replaced with actual screenshot*  
+![Privileges](./screenshots/PhaseIV/user_grants.png)
+
+---
+
+### 💻 SQL Commands Executed
+
+```sql
+ALTER SESSION SET CONTAINER = wed_27805_Ghislaine_Intelligence_PDB;
+
+CREATE USER ghislaine27805 IDENTIFIED BY ghislaine;
+
+GRANT ALL PRIVILEGES TO ghislaine27805;
+GRANT CONNECT, RESOURCE TO ghislaine27805;
+GRANT SYSDBA TO ghislaine27805;
