@@ -242,3 +242,136 @@ flowchart TD
   class A1 spy
   class B1,C1 analyst
   class D1,E1,F1,G1,H1 system
+```
+## 🧩 Phase III: Logical Model Design
+
+### 🎯 Objective
+
+This project addresses challenges within strategic intelligence operations such as delayed threat response, untracked spy conditions, missing historical risk logs, and absence of automation in alert generation.  
+The logical model designed here is built directly from the real-world security and intelligence needs described in Phase I and the detailed workflow modeled in Phase II.
+
+To design a normalized, constraint-based, relational structure that accurately models spies, missions, intelligence collection, threat evaluations, automated alerting, and status logs.
+
+---
+
+### 🗃️ Entities & Attributes
+
+#### 🕵 Spies
+
+| Attribute    | Type          | Constraint                                           |
+|---------------|----------------|-----------------------------------------------------|
+| Spy_ID        | NUMBER         | Primary Key (Auto-generated)                        |
+| Spy_Name      | VARCHAR(100)   | NOT NULL                                            |
+| Region        | VARCHAR(100)   | NULL allowed                                        |
+| Rank          | VARCHAR(30)    | CHECK (rank IN ('Junior','Senior','Elite'))         |
+| Status        | VARCHAR(30)    | Default 'Active', Controlled by system logic        |
+| Created_At    | DATE           | DEFAULT SYSDATE                                     |
+
+---
+
+#### 🎯 Missions
+
+| Attribute      | Type          | Constraint                                                          |
+|----------------|---------------|----------------------------------------------------------------------|
+| Mission_ID     | NUMBER        | Primary Key (Auto-generated)                                        |
+| Mission_Title  | VARCHAR(200)  | NOT NULL                                                            |
+| Mission_Type   | VARCHAR(50)   | CHECK (mission_type IN ('Surveillance','Tracking','Retrieval','Infiltration','Recon')) |
+| Difficulty     | VARCHAR(20)   | CHECK (difficulty IN ('Low','Medium','High'))                       |
+| Mission_Status | VARCHAR(30)   | Default 'Assigned', system-updated                                  |
+| Start_Date     | DATE          | NULL allowed                                                        |
+| End_Date       | DATE          | NULL allowed                                                        |
+
+---
+
+#### 📄 Intelligence_Report
+
+| Attribute        | Type           | Constraint                                                      |
+|------------------|----------------|-----------------------------------------------------------------|
+| Report_ID        | NUMBER         | Primary Key (Auto-generated)                                    |
+| Spy_ID           | NUMBER         | Foreign Key → Spies                                             |
+| Mission_ID       | NUMBER         | Foreign Key → Missions                                          |
+| Content_Summary  | VARCHAR(2000)  | NULL allowed                                                    |
+| Threat_Level     | VARCHAR(30)    | CHECK (IN ('No threat','Medium','High','Critical'))             |
+| Report_Date      | DATE           | DEFAULT SYSDATE                                                 |
+| Created_By       | VARCHAR(100)   | Tracks who submitted                                            |
+
+---
+
+#### 🧠 Threat_Analysis
+
+| Attribute           | Type           | Constraint                                                      |
+|---------------------|----------------|-----------------------------------------------------------------|
+| Analysis_ID         | NUMBER         | Primary Key (Auto-generated)                                    |
+| Report_ID           | NUMBER         | Foreign Key → Intelligence_Report                               |
+| Analyst_Name        | VARCHAR(100)   | NULL allowed                                                    |
+| Risk_Factor         | VARCHAR(30)    | CHECK (IN ('Low','Medium','High'))                              |
+| Recommended_Action  | VARCHAR(1000)  | NULL allowed                                                    |
+| Analysis_Date       | DATE           | DEFAULT SYSDATE                                                 |
+
+---
+
+#### 🗂 Spy_Status_Log
+
+| Attribute    | Type           | Constraint                                           |
+|---------------|----------------|-----------------------------------------------------|
+| Log_ID        | NUMBER         | Primary Key (Auto-generated)                        |
+| Spy_ID        | NUMBER         | Foreign Key → Spies                                 |
+| Old_Status    | VARCHAR(30)    | NULL allowed                                        |
+| New_Status    | VARCHAR(30)    | NOT NULL                                            |
+| Log_Date      | DATE           | DEFAULT SYSDATE                                     |
+| Note          | VARCHAR(1000)  | NULL allowed                                        |
+
+---
+
+#### ⚠ Internal_Alert
+
+| Attribute      | Type           | Constraint                                                          |
+|----------------|----------------|----------------------------------------------------------------------|
+| Alert_ID       | NUMBER         | Primary Key (Auto-generated)                                        |
+| Report_ID      | NUMBER         | Foreign Key → Intelligence_Report                                    |
+| Alert_Message  | VARCHAR(2000)  | NOT NULL                                                            |
+| Severity       | VARCHAR(30)    | CHECK (IN ('Medium','High','Critical'))                             |
+| Alert_Date     | DATE           | DEFAULT SYSDATE                                                     |
+
+---
+
+### 🔄 Relationships & Constraints
+
+- 🕵 **Spies → Intelligence Reports** — *One Spy can submit many reports* (1:N)  
+- 🎯 **Missions → Intelligence Reports** — *One Mission can have multiple reports* (1:N)  
+- 📄 **Report → Threat Analysis** — *One-to-One*  
+- ⚠ **Report → Alerts** — *One Report can generate multiple alerts* (1:N)  
+- 🧠 **Spy status changes generate logs** — (1 Spy → Many logs)  
+
+**Data Integrity Enforced Using:**
+- Foreign key references  
+- CHECK constraints on critical business attributes  
+- DEFAULT values for timestamps & system-driven status  
+- Auto-generated PK values via sequences  
+
+---
+
+### 📐 Normalization (3NF Verified)
+
+- **1NF** — All fields are atomic and non-duplicated  
+- **2NF** — All non-key attributes fully depend on PKs (no partial dependencies)  
+- **3NF** — No transitive dependencies  
+
+Examples:
+- Threat classification depends solely on the specific report (not on spy or mission)  
+- Status logs depend only on Spy_ID, never indirectly  
+
+---
+
+### 🖼️ ERD Diagram
+
+> 🟧 **Visual Placeholder: Logical Model ERD**  
+> 👉 *This screenshot illustrates all tables, PK-FK relationships, and system constraints.*
+
+![ERD - Logical Model](./screenshots/PhaseIII/ERD1.png)
+
+---
+
+![ERD - Logical Model](./screenshots/PhaseIII/ERD2.png)
+
+---
