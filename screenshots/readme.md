@@ -374,8 +374,7 @@ Examples:
 
 ![ERD - Logical Model](./screenshots/PhaseIII/ERD2.png)
 
----
-```
+``
 ## 🏗️ Phase IV: Database Creation and Access Setup (via SQL Developer)
 
 ### 🎯 Objective
