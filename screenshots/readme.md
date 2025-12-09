@@ -545,8 +545,7 @@ DDL changes included:
 ---
 ![DDL](./screenshots/PhaseVI/ddlOps.png)
 
----
-
+``
 ## 💡 Simple Analytics Problem Statement
 
 > **“Identify the number of alerts triggered by each spy in order to detect highly exposed agents.”**
@@ -561,7 +560,179 @@ SELECT
 FROM internal_alert a
 JOIN spies s ON a.spy_id = s.spy_id;
 ```
+CREATE OR REPLACE PROCEDURE record_intelligence_report (
+    p_spy_id       NUMBER,
+    p_mission_id   NUMBER,
+    p_summary      VARCHAR2,
+    p_details      CLOB,
+    p_threat_level VARCHAR2
+)
+AS
+    v_report_id NUMBER;
+    v_region_id NUMBER;
+    v_mission_type NUMBER;
+
+    CURSOR cur_mission IS
+        SELECT m.mission_type_id, s.region_id
+        FROM mission m
+        JOIN spy s ON s.spy_id = p_spy_id
+        WHERE m.mission_id = p_mission_id;
+
+BEGIN
+    OPEN cur_mission;
+    FETCH cur_mission INTO v_mission_type, v_region_id;
+    CLOSE cur_mission;
+
+    v_report_id := seq_report.NEXTVAL;
+
+    INSERT INTO intelligence_report(
+        report_id, spy_id, mission_id, content_summary, details, threat_level, report_date
+    ) VALUES (
+        v_report_id, p_spy_id, p_mission_id, p_summary, p_details, p_threat_level, SYSDATE
+    );
+
+    UPDATE spy
+    SET last_active = SYSDATE
+    WHERE spy_id = p_spy_id;
+
+    IF p_threat_level IN ('High', 'Critical') THEN
+        INSERT INTO internal_alert(
+            alert_id, report_id, alert_type_id, alert_message
+        ) VALUES (
+            seq_alert.NEXTVAL,
+            v_report_id,
+            1,
+            'Automatic alert: ' || p_threat_level || ' threat reported by Spy ' || p_spy_id
+        );
+    END IF;
+
+END;
+/
+BEGIN
+    record_intelligence_report(
+        p_spy_id       => 5,
+        p_mission_id   => 2,
+        p_summary      => 'Suspicious movement detected.',
+        p_details      => 'Unidentified individuals seen crossing restricted terrain.',
+        p_threat_level => 'High'
+    );
+END;
+/
+```
+CREATE OR REPLACE FUNCTION get_spy_threat_score(
+    p_spy_id NUMBER
+) RETURN NUMBER
+AS
+    v_score NUMBER := 0;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_score
+    FROM intelligence_report
+    WHERE spy_id = p_spy_id
+    AND threat_level IN ('High', 'Critical');
+
+    RETURN v_score;
+END;
+/
+```
+CREATE OR REPLACE TRIGGER trg_spy_status_auto
+AFTER INSERT ON intelligence_report
+FOR EACH ROW
+BEGIN
+    IF :NEW.threat_level = 'Critical' THEN
+        UPDATE spy SET status = 'Compromised' WHERE spy_id = :NEW.spy_id;
+
+    ELSIF :NEW.threat_level = 'High' THEN
+        UPDATE spy SET status = 'Under Review' WHERE spy_id = :NEW.spy_id;
+    END IF;
+END;
+/
+```
+CREATE OR REPLACE TRIGGER trg_spy_status_auto
+AFTER INSERT ON intelligence_report
+FOR EACH ROW
+BEGIN
+    IF :NEW.threat_level = 'Critical' THEN
+        UPDATE spy SET status = 'Compromised' WHERE spy_id = :NEW.spy_id;
+
+    ELSIF :NEW.threat_level = 'High' THEN
+        UPDATE spy SET status = 'Under Review' WHERE spy_id = :NEW.spy_id;
+    END IF;
+END;
+/
+```
+CREATE OR REPLACE TRIGGER trg_spy_status_auto
+AFTER INSERT ON intelligence_report
+FOR EACH ROW
+BEGIN
+    IF :NEW.threat_level = 'Critical' THEN
+        UPDATE spy SET status = 'Compromised' WHERE spy_id = :NEW.spy_id;
+
+    ELSIF :NEW.threat_level = 'High' THEN
+        UPDATE spy SET status = 'Under Review' WHERE spy_id = :NEW.spy_id;
+    END IF;
+END;
+/
+```
+CREATE OR REPLACE PACKAGE siu_intel_pkg AS
+    PROCEDURE record_intel(
+        p_spy_id       NUMBER,
+        p_mission_id   NUMBER,
+        p_summary      VARCHAR2,
+        p_details      CLOB,
+        p_threat_level VARCHAR2
+    );
+
+    FUNCTION get_spy_threat_score(p_spy_id NUMBER) RETURN NUMBER;
+END siu_intel_pkg;
+/
+```
+CREATE OR REPLACE PACKAGE BODY siu_intel_pkg AS
+
+    PROCEDURE record_intel(
+        p_spy_id       NUMBER,
+        p_mission_id   NUMBER,
+        p_summary      VARCHAR2,
+        p_details      CLOB,
+        p_threat_level VARCHAR2
+    )
+    AS
+    BEGIN
+        record_intelligence_report(
+            p_spy_id,
+            p_mission_id,
+            p_summary,
+            p_details,
+            p_threat_level
+        );
+    END record_intel;
+
+    FUNCTION get_spy_threat_score(p_spy_id NUMBER)
+    RETURN NUMBER
+    AS
+    BEGIN
+        RETURN get_spy_threat_score(p_spy_id);
+    END;
+
+END siu_intel_pkg;
+/
+```
+BEGIN
+    siu_intel_pkg.record_intel(
+        3, 
+        10,
+        'Unknown convoy detected entering restricted perimeter.',
+        'Movement suggests collaboration with hostile actors.',
+        'Critical'
+    );
+
+    DBMS_OUTPUT.PUT_LINE(
+        'Threat Score for Spy 3: ' || siu_intel_pkg.get_spy_threat_score(3)
+    );
+END;
+/
 ---
+```
 ## 🧠 Phase VII: Advanced Database Programming and Auditing
 
 ### 🎯 Objective
