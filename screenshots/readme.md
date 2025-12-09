@@ -560,3 +560,49 @@ SELECT
     COUNT(a.alert_id) OVER (PARTITION BY a.spy_id) AS total_alerts_triggered
 FROM internal_alert a
 JOIN spies s ON a.spy_id = s.spy_id;
+```
+---
+## 🧠 Phase VII: Advanced Database Programming and Auditing
+
+### 🎯 Objective
+
+To secure the intelligence system by implementing **trigger-based restrictions**, **centralized auditing logic**, and **automated status monitoring** to ensure controlled data access and accountability for all mission-critical modifications.
+
+This phase adds governance and traceability critical to intelligence operations.
+
+---
+
+## 🔍 Problem Statement
+
+Intelligence records and threat analyses represent sensitive information that must not be altered during strategic blackout periods such as:
+
+- Active field operations
+- Restricted high-risk periods
+- Emergency lockdown dates
+
+To address this, the system implements:
+
+- 🔒 DML blocking based on operation-restricted dates  
+- 🕵 Full logging of user actions  
+- 🗂 Stored tracking of attempted and executed changes  
+
+This establishes **monitoring integrity**, **audit readiness**, and **preventive access controls**.
+
+---
+
+## 📅 Operation Restriction Calendar
+
+### ✅ `restricted_days` Table
+
+The security office defines certain blackout dates on which intelligence reports cannot be altered.
+
+```sql
+CREATE TABLE restricted_days (
+    restriction_date DATE PRIMARY KEY,
+    reason           VARCHAR2(100)
+);
+
+-- Sample restriction periods
+INSERT INTO restricted_days VALUES (TO_DATE('2025-01-15','YYYY-MM-DD'), 'High-risk Cross-Border Operation');
+INSERT INTO restricted_days VALUES (TO_DATE('2025-02-06','YYYY-MM-DD'), 'Classified Mission Debrief Window');
+COMMIT;
