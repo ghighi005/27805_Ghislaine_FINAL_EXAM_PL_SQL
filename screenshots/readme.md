@@ -157,6 +157,3 @@ flowchart TD
   class B,H report
   class C,G,J process
   class D,E,F alert
-
-
-git
