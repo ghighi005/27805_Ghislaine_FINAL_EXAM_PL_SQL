@@ -427,3 +427,81 @@ CREATE USER ghislaine27805 IDENTIFIED BY ghislaine;
 GRANT ALL PRIVILEGES TO ghislaine27805;
 GRANT CONNECT, RESOURCE TO ghislaine27805;
 GRANT SYSDBA TO ghislaine27805;
+```
+## 🧱 Phase V: Table Implementation and Data Insertion
+
+### 🎯 Objective
+
+To physically implement the database structure derived from the logical model and populate it with realistic test data. This ensures that entity relationships, system workflows, and later PL/SQL logic can be fully validated within a functioning data environment.
+
+---
+
+### 🔨 Step 1: Table Creation
+
+✅ The following tables were created in the schema `wed_27805_Ghislaine_Intelligence_PDB` using SQL Developer:
+
+---
+
+#### 🧱 Table: Spies
+
+![Spies Table Created](./screenshots/PhaseV/spies_created.png)
+
+---
+
+#### 🧱 Table: Missions
+
+![Missions Table Created](./screenshots/PhaseV/missions_created.png)
+
+---
+
+#### 🧱 Table: Intelligence_Report
+
+![Reports Table Created](./screenshots/PhaseV/reports_created.png)
+
+---
+
+#### 🧱 Table: Threat_Analysis
+
+![Analysis Table Created](./screenshots/PhaseV/analysis_created.png)
+
+---
+
+#### 🧱 Table: Spy_Status_Log
+
+![Status Log Table Created](./screenshots/PhaseV/log_created.png)
+
+---
+
+#### 🧱 Table: Internal_Alert
+
+![Alert Table Created](./screenshots/PhaseV/alerts_created.png)
+
+---
+
+### 📥 Step 2: Data Insertion
+
+Realistic security and mission-related data were inserted into each table to simulate operations of an intelligence organization.
+
+---
+
+#### 🗃️ Insertion: Spies
+
+![Spy Data Inserted](./screenshots/PhaseV/spies_data.png)
+
+---
+
+#### 🗃️ Insertion: Missions
+
+![Mission Data Inserted](./screenshots/PhaseV/missions_data.png)
+
+---
+
+#### 🗃️ Insertion: Intelligence Reports
+
+![Report Data Inserted](./screenshots/PhaseV/report_data.png)
+
+---
+
+#### 🗃️ Insertion: Threat Analysis Records
+
+![Analysis Data Inserted](./screenshots/Phas)
