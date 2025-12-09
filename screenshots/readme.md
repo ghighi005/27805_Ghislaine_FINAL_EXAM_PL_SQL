@@ -462,7 +462,7 @@ To physically implement the database structure derived from the logical model an
 
 #### 🧱 Table: Threat_Analysis
 
-![Analysis Table Created](./screenshots/PhaseV/analysis_created.png)
+![Analysis Table Created](./screenshots/PhaseV/analysis_created.png)threat analyis table.png
 
 ---
 
