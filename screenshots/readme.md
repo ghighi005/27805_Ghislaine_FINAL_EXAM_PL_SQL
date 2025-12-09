@@ -188,12 +188,14 @@ It demonstrates how an **MIS supports strategic decision-making** through real-t
 ---
 
 #### 🔗 Mermaid Diagram  
-![Mermaid Diagram](screenshots/phase%20II/mermaid.png)
+![Mermaid Diagram](screenshots/phase%20II/mermaid.png)<img width="1083" height="822" alt="Screenshot 2025-12-09 133122" src="https://github.com/user-attachments/assets/5ea453f8-e2d6-4e27-8411-66ef77df2aae" />
+
 
 ---
 
 #### 🧩 Draw.io BPMN Diagram  
-![Draw.io Diagram](screenshots/phase%20II/BPMN.png)
+![Draw.io Diagram](screenshots/phase%20II/BPMN.png)<img width="1177" height="719" alt="Screenshot 2025-12-09 133254" src="https://github.com/user-attachments/assets/5df0048f-03f9-4cc9-a768-76c3c425f205" />
+
 
 ---
 
@@ -513,7 +515,8 @@ Realistic security and mission-related data were inserted into each table to sim
 
 #### 🗃️ Insertion: Threat Analysis Records
 
-![Analysis Data Inserted](./screenshots/Phas)
+![Analysis Data Inserted](./screenshots/Phas)<img width="1478" height="306" alt="Screenshot 2025-12-09 191917" src="https://github.com/user-attachments/assets/18c20307-e081-422f-87d2-559a260cc3cf" />
+
 ``
 # Phase VI – PL/SQL Programming (Procedures, Functions, Triggers, Packages)
 Shadow Intelligence Unit (SIU) – Intelligence Automation Module
