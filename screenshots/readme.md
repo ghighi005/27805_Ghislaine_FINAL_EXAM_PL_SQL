@@ -157,3 +157,88 @@ flowchart TD
   class B,H report
   class C,G,J process
   class D,E,F alert
+```
+---
+## 📘 Phase II: Business Process Modeling (MIS)
+
+### 🔍 Scope & Purpose
+This phase models the **intelligence workflow** from field report submission to threat analysis and alert generation.  
+It demonstrates how an **MIS supports strategic decision-making** through real-time risk detection, automated alerting, and historical threat traceability.
+
+---
+
+### 👥 Key Actors
+
+| Role                | Responsibility                                                    |
+|--------------------|------------------------------------------------------------------|
+| Field Spy           | Submits intelligence reports from mission regions                |
+| Threat Analyst      | Reviews reports and classifies risk levels                      |
+| SIU Intelligence System | Stores reports, evaluates threat severity, triggers alerts     |
+| Security Leadership | Receives alerts and responds operationally                      |
+| Audit & Status Log Service | Tracks spy status transitions and threat-driven changes     |
+
+---
+
+### 🖼️ Process Diagram
+
+✅ **Tools Used:**  
+- **Mermaid** (Lightweight BPMN-style flow)  
+- **Draw.io** (Swimlane-based BPMN format)  
+
+---
+
+#### 🔗 Mermaid Diagram  
+![Mermaid Diagram](./screenshots/PhaseII/phaseII.png)
+
+---
+
+#### 🧩 Draw.io BPMN Diagram  
+![Draw.io Diagram](./screenshots/PhaseII/phaseII.drawio.png)
+
+---
+
+### 🧠 MIS Value & Flow Summary
+The diagram begins when a **Field Spy collects mission-based intelligence** and submits a report.  
+The system then sends this report to a **Threat Analyst** who evaluates severity and recommends actions.  
+If the threat is **High or Critical**, the system automatically generates an alert and notifies leadership.  
+Leadership may change mission objectives or modify spy operational status (such as Injured or Compromised).  
+
+The MIS process delivers value by:
+- Supporting **real-time operational decision-making**  
+- Automating **alert escalation** for severe threats  
+- Maintaining **historical risk trails**  
+- Capturing **spy status over time through log records**  
+- Reducing human delay during threat escalation  
+
+---
+
+### 💻 Mermaid Code Reference
+
+```mermaid
+flowchart TD
+  start([● Intelligence Lifecycle Start]) --> A1["🕵 Field Spy\nSubmit Report"]
+  A1 --> A2["📄 Report Stored"]
+  A2 --> B1["🧠 Analyst Review"]
+
+  B1 --> C1["📊 Determine Threat Severity"]
+  C1 --> D1{{"🔍 Threat = High or Critical?"}}
+
+  D1 -- Yes --> E1["🚨 Generate Internal Alert"]
+  E1 --> F1["🏛 Notify Leadership"]
+  F1 --> H1["🔐 Update Spy Status (If Required)"]
+
+  D1 -- No --> G1["✔ Archive as Low-Risk Intelligence"]
+  G1 --> finish([✅ Process End])
+
+  H1 --> finish
+
+ 
+
+  classDef spy fill:#f8e9a1,stroke:#333;
+  classDef analyst fill:#cde3ff,stroke:#333;
+  classDef system fill:#ffd1d1,stroke:#333;
+  classDef leadership fill:#f3d1ff,stroke:#333;
+
+  class A1 spy
+  class B1,C1 analyst
+  class D1,E1,F1,G1,H1 system
