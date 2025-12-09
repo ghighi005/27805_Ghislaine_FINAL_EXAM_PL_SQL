@@ -189,12 +189,11 @@ It demonstrates how an **MIS supports strategic decision-making** through real-t
 
 #### 🔗 Mermaid Diagram  
 ![Mermaid Diagram](screenshots/phase%20II/mermaid.png)
-![Mermaid Diagram](screenshots/phase%20II/BPMN.png)
 
 ---
 
 #### 🧩 Draw.io BPMN Diagram  
-![Draw.io Diagram](screenshots/phase II/BPMN.png)
+![Draw.io Diagram](screenshots/phase%20II/BPMN.png)
 
 ---
 
