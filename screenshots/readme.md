@@ -370,11 +370,10 @@ Examples:
 > 🟧 **Visual Placeholder: Logical Model ERD**  
 > 👉 *This screenshot illustrates all tables, PK-FK relationships, and system constraints.*
 
-![ERD - Logical Model](./screenshots/PhaseIII/ERD1.png)
+![ERD - Logical Model](./screenshots/PhaseIII/ERD1.png)<img width="886" height="800" alt="Screenshot 2025-12-09 193806" src="https://github.com/user-attachments/assets/ff348798-fa56-42b0-8fef-fc6c59fe2484" />
+
 
 ---
-
-![ERD - Logical Model](./screenshots/PhaseIII/ERD2.png)
 
 ``
 ## 🏗️ Phase IV: Database Creation and Access Setup (via SQL Developer)
