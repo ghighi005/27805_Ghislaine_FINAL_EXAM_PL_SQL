@@ -505,3 +505,58 @@ Realistic security and mission-related data were inserted into each table to sim
 #### 🗃️ Insertion: Threat Analysis Records
 
 ![Analysis Data Inserted](./screenshots/Phas)
+``
+## 🔧 Phase VI: PL/SQL Programming (Procedures, Functions, Triggers, Packages)
+
+### 🎯 Objective
+
+To implement mission-critical intelligence logic directly through PL/SQL.  
+This phase focuses on:
+- automated threat evaluations,  
+- spy status tracking,  
+- alert generation, and  
+- structured logic encapsulated inside packages.  
+
+Business rules are executed within Oracle to maintain consistency, speed, and auditability.
+
+---
+
+## 🧱 Database Operations
+
+### 🔁 DML Operations
+DML was used to:
+- register new intelligence reports,
+- update threat assessment results,
+- modify spy operational statuses.
+
+Examples performed through SQL Developer include inserting new reports, updating risk factors, and logging status changes.
+
+---
+![DML](./screenshots/PhaseVI/dmlOps.png)
+
+---
+
+### 🧩 DDL Operations
+DDL changes included:
+- Creating threat analysis and alerting tables  
+- Applying new DEFAULT constraints  
+- Updating NOT NULL columns after validation  
+
+---
+![DDL](./screenshots/PhaseVI/ddlOps.png)
+
+---
+
+## 💡 Simple Analytics Problem Statement
+
+> **“Identify the number of alerts triggered by each spy in order to detect highly exposed agents.”**
+
+A window function was used to compute alert frequency:
+
+```sql
+SELECT 
+    s.spy_name,
+    a.spy_id,
+    COUNT(a.alert_id) OVER (PARTITION BY a.spy_id) AS total_alerts_triggered
+FROM internal_alert a
+JOIN spies s ON a.spy_id = s.spy_id;
